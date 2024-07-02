@@ -1,4 +1,4 @@
-# DeepL API key
+# DeepL API key - this api key is invalid, replace it with your own
 $apiKey = "1e6a6f8e-949f-4adc-9eb2-e1c5f59eb094:fx"
 
 # Input file
@@ -22,12 +22,16 @@ $rowMax = $usedRange.Rows.Count
 #$rowMax = 10
 
 # Function to translate text using DeepL
-function Translate-Text($text) {
+function Translate-Text {
+    param (
+        [string]$text,
+        [string]$targetLang = "EN"
+    )
     $uri = "https://api-free.deepl.com/v2/translate"
     $body = @{
         auth_key    = $apiKey
         text        = $text
-        target_lang = "EN"
+        target_lang = $targetLang
     }
     $response = Invoke-RestMethod -Uri $uri -Method Post -Body $body
     return $response.translations.text
@@ -35,14 +39,24 @@ function Translate-Text($text) {
 
 # Iterate through each row
 for ($row = 2; $row -le $rowMax; $row++) {
+
+    # Check if the colum number matches the column number in your Excel file
     $german = $worksheet.Cells.Item($row, 6).Text # Column D for German
     $english = $worksheet.Cells.Item($row, 7).Text # Column E for English
+    # $french = $worksheet.Cells.Item($row, 8).Text # Column F for French
 
     if ([string]::IsNullOrWhiteSpace($english)) {
-        $translation = Translate-Text $german
-        $worksheet.Cells.Item($row, 7).Value = $translation # Update the English column with the translation
-        Write-Output "Translated and updated row ${row}: $translation"
+        $englishTranslation = Translate-Text $german
+        $worksheet.Cells.Item($row, 7).Value = $englishTranslation # Update the English column with the translation
+        Write-Output "Translated and updated row ${row}: $englishTranslation"
     }
+
+    # You can add more languages if need to translate the text entries to more languages
+    # if ([string]::IsNullOrWhiteSpace($french)) {
+    #     $frenchTranslation = Translate-Text $german --targetLang "FR"
+    #     $worksheet.Cells.Item($row, 8).Value = $frenchTranslation # Update the French column with the translation
+    #     Write-Output "Translated and updated row ${row}: $frenchTranslation"
+    # }
 }
 
 # Save and close the workbook
