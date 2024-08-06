@@ -29,12 +29,6 @@ But you may have additional columns for Italian and French translations.
 pwsh .\deepl_script.ps1
 ```
 
-**Windows PowerShell**
-
-```shell
-powershell .\deepl_script.ps1
-```
-
 **Note:** You may need to confirm the execution of the script by pressing `R` and then `Enter`.
 
 ## Adittional Tips
