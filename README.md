@@ -35,10 +35,12 @@ pwsh .\deepl_script.ps1
 powershell .\deepl_script.ps1
 ```
 
+**Note:** You may need to confirm the execution of the script by pressing `R` and then `Enter`.
+
 ## Adittional Tips
 
 Set the execution policy to RemoteSigned to run the script.
 
 ```shell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process
 ```

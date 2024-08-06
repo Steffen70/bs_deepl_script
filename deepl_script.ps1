@@ -37,25 +37,37 @@ function Translate-Text {
     return $response.translations.text
 }
 
+$germanColumn = 1; # Column D for German
+$englishColumn = 7; # Column E for English
+# $frechColumn = 3; # Column F for French
+# $italianColumn = 5; # Column G for Italian
+
 # Iterate through each row
 for ($row = 2; $row -le $rowMax; $row++) {
-
     # Check if the colum number matches the column number in your Excel file
-    $german = $worksheet.Cells.Item($row, 6).Text # Column D for German
-    $english = $worksheet.Cells.Item($row, 7).Text # Column E for English
-    # $french = $worksheet.Cells.Item($row, 8).Text # Column F for French
+    $german = $worksheet.Cells.Item($row, $germanColumn).Text 
+    $english = $worksheet.Cells.Item($row, $englishColumn).Text 
 
     if ([string]::IsNullOrWhiteSpace($english)) {
         $englishTranslation = Translate-Text $german
-        $worksheet.Cells.Item($row, 7).Value = $englishTranslation # Update the English column with the translation
+        $worksheet.Cells.Item($row, $englishColumn).Value = $englishTranslation # Update the English column with the translation
         Write-Output "Translated and updated row ${row}: $englishTranslation"
     }
 
     # You can add more languages if need to translate the text entries to more languages
+
+    # $french = $worksheet.Cells.Item($row, $frechColumn).Text
+    # $italian = $worksheet.Cells.Item($row, $italianColumn).Text
     # if ([string]::IsNullOrWhiteSpace($french)) {
-    #     $frenchTranslation = Translate-Text $german --targetLang "FR"
-    #     $worksheet.Cells.Item($row, 8).Value = $frenchTranslation # Update the French column with the translation
+    #     $frenchTranslation = Translate-Text $german -targetLang "FR"
+    #     $worksheet.Cells.Item($row, $frechColumn).Value = $frenchTranslation # Update the French column with the translation
     #     Write-Output "Translated and updated row ${row}: $frenchTranslation"
+    # }
+
+    # if ([string]::IsNullOrWhiteSpace($italian)) {
+    #     $italianTranslation = Translate-Text $german -targetLang "IT"
+    #     $worksheet.Cells.Item($row, $italianColumn).Value = $italianTranslation # Update the Italian column with the translation
+    #     Write-Output "Translated and updated row ${row}: $italianTranslation"
     # }
 }
 
